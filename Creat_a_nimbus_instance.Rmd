@@ -1,0 +1,182 @@
+---
+title: "Create a nimbus instance"
+author: "Nandan Deshpande"
+date: "25 Nov 2021"
+output:
+  html_notebook:
+    number_sections: yes
+    theme: united
+    toc: yes
+    toc_float: yes
+  html_document:
+    df_print: paged
+    toc: yes
+editor_options:
+  chunk_output_type: inline
+---
+__Last updated__: `r Sys.Date()`
+
+```{r, echo=FALSE}
+library(knitr)
+opts_chunk$set(fig.align = "center")
+knitr::opts_chunk$set(fig.width=20, fig.height=8) 
+```
+
+
+# Description
+SIH Project: [XXXX](https:)
+
+
+# People
+
+__SIH staff members__
+
+* Tracy Chew (Group Lead)
+* Nandan Deshpande 
+* Georgina Samaha
+
+
+# Compute facilities
+
+Nimbus - Pawsey Supercomputing Centre
+
+Project: Running nf-core pipelines on nimbus instance
+
+Directory: 
+
+
+# Nimbus Instance
+
+## Login to Nimbus
+
+```{r}
+1. Browse to the Nimbus dashboard at https://nimbus.pawsey.org.au
+2. Enter the domain "pawsey"
+3. Enter your Pawsey username and password
+
+```
+
+## Create/launch an instance
+[Follow this link](https://support.pawsey.org.au/documentation/display/US/Create+a+Nimbus+Instance#CreateaNimbusInstance-LogintoyourNimbusdashboard)
+
+
+## Access and Use Your Nimbus Instance
+[Follow this link](https://support.pawsey.org.au/documentation/display/US/Access+and+Use+Your+Nimbus+Instance#AccessandUseYourNimbusInstance-LoginviaTerminal)
+```{r}
+ 
+#Login via Terminal
+ssh -i ~/.ssh/My_Key_Pair.pem login_name@###.###.##.##
+
+# For the current Bio-instance
+ssh -i ~/.ssh/My_Key_Pair.pem ubuntu@146.118.66.220
+  
+  
+```
+
+
+## Attach a Storage Volume
+[Follow this link](https://support.pawsey.org.au/documentation/display/US/Attach+a+Storage+Volume)
+```{r}
+
+
+# If your instance is rebooted for any reason, you will need to mount your volume again.
+
+# It is possible to resize an existing storage volume to make it larger, if additional space is required in an instance. 
+(/dev/vdc)
+
+# You cannot resize a root volume of an instance 
+(the volume mounted as /dev/vda1 inside the instance).
+
+```
+
+## Details of the Bio-instance
+
+```{r}
+Instance Name : fastqc_to_vcf_updated_Bio
+Image Name    : Pawsey Bio - Ubuntu 20.04 - 2021-11
+IP Address    : 146.118.66.220
+Flavour Name  : n3.16c64r
+
+
+RAM           : 64GB
+VCPUs         : 16 VCPU
+Disk          : 40GB
+
+Attached (external) volume : for_fastq_to_vcf_primary
+Size                       : 2000GiB
+Attached To                : /dev/vdc on fastqc_to_vcf_updated_Bio
+```
+
+
+
+## Transfer Your Data
+[Follow this link](https://support.pawsey.org.au/documentation/display/US/Transfer+Your+Data)
+```{r}
+
+I have used the script provided at https://github.sydney.edu.au/informatics/bio_tidbits/blob/master/Scripts/gadi_2_rds.pbs and modified it. 
+```
+
+
+
+# Nimbus for Bioinformatics (Link sent by Audrey after updating the bioinstance)
+[Follow this link](https://support.pawsey.org.au/documentation/display/US/Nimbus+for+Bioinformatics#NimbusforBioinformatics-Summary)
+
+
+## Pre-installed software on nimbus Bio-Instance
+
+```{r}
+
+The list of pre-installed software on this image is as follows:
+* Ansible - an automation platform that Pawsey uses to automate a number of software deployment 
+* CernVM-FS - a read-only file system for accessing reference datasets
+* Docker - a popular container engine
+* Jupyter Notebook (container)
+* Lmod - a modules environment that we use at Pawsey for loading sotware
+* Nextflow - a popular workflow manager
+* Pip - a Python package installer 
+* Python3
+* RStudio (contrainer)
+* Singularity - a popular container engine that can be used on HPC
+* Singularity-HPC - a container modules installer
+* Spack - a package management tool
+
+
+```
+
+## shpc containers
+```{r}
+
+# To see the entire list of containers available on the registry, run the following command
+shpc list
+
+# To see the list of containers available fro deployement on this "Bio" container
+shpc show
+
+# Pawsey recommends using S-HPCs registry of quay.io/biocontainers containers, as Biocontainers are a reliable source of well-built containers, with versions that are seamlessly matched to BioCondas tools. 
+
+# To narrow down the list to biocontainers, run:
+  shpc show -f quay.io/biocontainers
+
+
+# To install teh shpc container
+ shpc install quay.io/biocontainers/TOOL_NAME
+
+# To use installed containers, run the following and use the tool as you normally would (no container syntax required):
+ module load quay.io/biocontainers/TOOL_NAME
+
+
+```
+
+
+## Additional tool installations on the Bio-instance
+```{r}
+* BBMap : Used for subsetting the fastq files      https://sourceforge.net/projects/bbmap/
+Path on the instance - /data/SIH/other_tools/BBMap/bbmap/
+
+* Graphviz: To render the execution DAG (nextflow) in the required format http://www.graphviz.org/download/ 
+sudo apt install graphviz
+
+  
+```
+
+
